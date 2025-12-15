@@ -50,8 +50,7 @@
 
 * `main.py`: FastAPI Backend (API-маршруты, управление пулом БД)
 * `llm_service.py`: Логика генерации SQL через Gemini
-* `bot.py`: Логика Telegram-бота
+* `bot_service.py`: Логика Telegram-бота
 * `data_loader.py`: Скрипт для ETL (загрузка данных в БД)
 * `logging_config.py`: Централизованная настройка логгирования
-* `docker-compose.yml`: Конфигурация для запуска
 * `requirements.txt`: Зависимости
