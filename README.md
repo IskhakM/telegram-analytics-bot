@@ -62,7 +62,7 @@
 5.  **Запуск Бота:**
     Запустите Telegram-интерфейс:
     ```bash
-    python bot.py
+    python bot_service.py
     ```
 
 ---
