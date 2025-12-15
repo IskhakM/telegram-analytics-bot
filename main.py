@@ -1,13 +1,15 @@
-import os
-import uvicorn
 import asyncio
+import os
 import sys
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator, Optional
+
+import asyncpg
+import uvicorn
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
-from typing import Optional, AsyncGenerator
-from contextlib import asynccontextmanager
-from dotenv import load_dotenv
-import asyncpg
+
 from llm_service import generate_sql
 from logging_config import configure_logger
 

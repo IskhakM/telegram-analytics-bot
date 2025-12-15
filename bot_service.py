@@ -1,14 +1,14 @@
+import asyncio
 import os
 import sys
-import asyncio
+
 import httpx
-from aiogram import Bot, Dispatcher, types, Router
-from aiogram.filters import CommandStart
+from aiogram import Bot, Dispatcher, Router, types
 from aiogram.client.default import DefaultBotProperties
+from aiogram.filters import CommandStart
 from dotenv import load_dotenv
 
 from logging_config import configure_logger
-
 
 load_dotenv()
 
@@ -53,7 +53,7 @@ async def get_backend_answer(user_query):
 
     except httpx.HTTPStatusError as error:
         status_code = error.response.status_code
-        
+
         try:
             detail = error.response.json().get('detail', 'Неизвестная ошибка API')
         except:

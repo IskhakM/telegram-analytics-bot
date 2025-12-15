@@ -2,11 +2,12 @@ import asyncio
 import json
 import os
 import sys
-from dotenv import load_dotenv
-import asyncpg
 
-from utilis import get_naive_utc, run_sql_script
+import asyncpg
+from dotenv import load_dotenv
+
 from logging_config import configure_logger
+from utilis import get_naive_utc, run_sql_script
 
 load_dotenv()
 

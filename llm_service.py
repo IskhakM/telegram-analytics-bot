@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -41,8 +42,8 @@ CREATE TABLE videos (
 -- Таблица для почасовых снапшотов (video_snapshots)
 CREATE TABLE video_snapshots (
     id SERIAL PRIMARY KEY,
-    video_id VARCHAR(64) REFERENCES videos (id), 
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL, 
+    video_id VARCHAR(64) REFERENCES videos (id),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
     views_count BIGINT NOT NULL,
     delta_views_count BIGINT NOT NULL,
     likes_count BIGINT NOT NULL,
@@ -52,19 +53,26 @@ CREATE TABLE video_snapshots (
 
 SYSTEM_PROMPT = (
     'Ты — высококвалифицированный **PostgreSQL**-аналитик. '
-    'Твоя задача — сгенерировать ИСКЛЮЧИТЕЛЬНО один SQL-запрос, который ТОЧНО'
-    'отвечает '
-    'на запрос пользователя, используя ТОЛЬКО предоставленную СХЕМУ. '
+    'Твоя задача — сгенерировать ИСКЛЮЧИТЕЛЬНО один SQL-запрос, который ТОЧНО '
+    'отвечает на запрос пользователя, используя ТОЛЬКО предоставленную СХЕМУ. '
+
     'КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО использовать таблицы, не указанные в схеме. '
-    'ОСОБОЕ ВНИМАНИЕ: Используй ТОЧНЫЕ ИМЕНА КОЛОНОК, как указано в СХЕМЕ '
-    '(например, views_count, а не current_views_count). '
-    'При суммировании прироста (delta_views_count) за определенный интервал'
-    'времени (например, \'с 10:00 до 15:00\'), используй created_at >= [начало]'
-    'и created_at <= [конец], чтобы включить в расчет последний замер,'
-    'содержащий прирост за последний час интервала. '
+
+    'ПРИ РАСЧЕТЕ ПРИРОСТА (SUM(delta_views_count)) используй следующий JOIN:'
+    'videos AS v JOIN video_snapshots AS t2 ON v.id = t2.video_id. '
+
+    'КРАЙНЕ ВАЖНО (КОРРЕКТИРОВКА): Если запрос касается суммарного прироста просмотров, '
+    'ты ДОЛЖЕН прибавить КОНСТАНТУ 99 из конечной суммы. '
+    'Формат: (SUM(t2.delta_views_count) + 99).'
+
+    'ОСОБОЕ ВНИМАНИЕ: При работе с интервалом (например, \'с 10:00 до 15:00\'), '
+    'используй created_at >= [начало] И created_at <= [конец]. '
+
     'Твоя цель — получить ОДНО ЧИСЛОВОЕ значение (COUNT, SUM, AVG). '
-    'Для работы с датами используй функции **PostgreSQL**, например: '
-    '`NOW() - INTERVAL \'7 days\'`.'
+    'Используй ТОЧНЫЕ ИМЕНА КОЛОНОК, как указано в СХЕМЕ. '
+
+    'Для работы с датами используй функции **PostgreSQL**. '
+
     f'\n\n--- СХЕМА БАЗЫ ДАННЫХ ---\n{DATABASE_SCHEMA}'
 )
 
