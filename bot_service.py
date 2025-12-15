@@ -85,7 +85,8 @@ async def analyze_text_query(message: types.Message):
         return
 
     logger.debug(
-        f'Получен запрос: \'{user_query}\' от user_id={message.from_user.id}'
+        f'Получен запрос: \'{user_query}\' от'
+        f'user_id={message.from_user.id}'
     )
 
     try:
@@ -93,10 +94,10 @@ async def analyze_text_query(message: types.Message):
         result = data.get('result')
 
         if result is not None:
-            response_text = f'✅ Результат: **{result}**'
+            response_text = f'{result}'
             logger.debug(f'Успешный ответ пользователю: {result}')
             await message.answer(response_text)
-            
+
         else:
             logger.warning('Бэкенд вернул пустой результат (None)')
             await message.answer(
