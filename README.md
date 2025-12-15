@@ -37,8 +37,9 @@
 
 ```bash
 docker compose up --build
+```
 
-3. Запуск вручную (Для разработки)
+### 3. Запуск вручную (Для разработки)
 
 Установка: pip install -r requirements.txt
 
